@@ -3,13 +3,14 @@ const { AcademicYear, Periode, Semester } = require("../../database/sequelize")
 module.exports = app => {
     app.get('/year/current', async( req, res ) => {
         try {
-            const academicYear = await AcademicYear.findOne({
+            const academicYear = await AcademicYear.findOne(
+                {
+                    where: { currentAcademicYear: true },
                     include: [{
                         model: Periode,
                         include: [{ model: Semester }]
                     }]
-                },
-                { where: { currentAcademicYear: true }}
+                }
             )
 
             res.status( 200 ).json({
